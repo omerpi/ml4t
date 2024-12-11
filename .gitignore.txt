@@ -1,0 +1,3 @@
+# Ignore all .bin and .gz files in the specified directory
+02_market_and_fundamental_data/01_NASDAQ_TotalView-ITCH_Order_Book/data/*.bin
+02_market_and_fundamental_data/01_NASDAQ_TotalView-ITCH_Order_Book/data/*.gz
