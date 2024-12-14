@@ -26,11 +26,12 @@ def format_time(t):
     h, m = divmod(m, 60)
     return f'{h:0>2.0f}:{m:0>2.0f}:{s:0>5.2f}'
 
+date = '10302019'
 data_path = Path(r'C:\Users\pinha\OneDrive\Documents\Trading\data')
-itch_store = str(data_path / 'itch.h5')
+itch_store = str(data_path / f'itch_{date}.h5')
 order_book_store = data_path / 'order_book.h5'
 HTTPS_URL = 'https://emi.nasdaq.com/ITCH/Nasdaq%20ITCH/'
-SOURCE_FILE = '10302019.NASDAQ_ITCH50.gz'
+SOURCE_FILE = f'{date}.NASDAQ_ITCH50.gz'
 
 def may_be_download(url):
     """Download & unzip ITCH data if not yet available"""
