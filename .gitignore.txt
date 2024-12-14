@@ -1,3 +1,14 @@
 # Ignore all .bin and .gz files in the specified directory
 02_market_and_fundamental_data/01_NASDAQ_TotalView-ITCH_Order_Book/data/*.bin
 02_market_and_fundamental_data/01_NASDAQ_TotalView-ITCH_Order_Book/data/*.gz
+
+# Example .gitignore entries
+*.zip
+*.bin
+*.gz
+*.tar.gz
+*.psd
+__pycache__/
+env/
+venv/
+.env/
