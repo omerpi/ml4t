@@ -23,7 +23,7 @@ def format_time(t):
 
 # Set your date & stock symbol here
 date = '10302019'
-stock = 'ICE'
+stock = 'GE'
 
 # Adjust the paths below as needed
 data_path = Path(r'C:\Users\pinha\OneDrive\Documents\Trading\data')
@@ -344,12 +344,12 @@ fig, ax = plt.subplots(figsize=(14, 6))
 
 buy_per_min.plot.scatter(
     x='timestamp', y='price', c='shares',
-    ax=ax, cmap='Blues', colorbar=False, alpha=0.25
+    ax=ax, cmap='Blues', colorbar=False, alpha=0.2
 )
 
 sell_per_min.plot.scatter(
     x='timestamp', y='price', c='shares',
-    ax=ax, cmap='Reds', colorbar=False, alpha=0.25
+    ax=ax, cmap='Reds', colorbar=False, alpha=0.1
 )
 
 title = f'{stock} | {date} | Buy & Sell Limit Order Book | Depth = {depth}'
