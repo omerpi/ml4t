@@ -3,8 +3,7 @@
 
 from pathlib import Path
 from collections import Counter
-from datetime import timedelta
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from time import time
 from matplotlib.ticker import FuncFormatter
 
@@ -198,9 +197,8 @@ sns.histplot(
     ax=ax,
     label='Buy',
     kde=False,
-    color='blue',  # Explicit color
     linewidth=1,
-    alpha=0.5
+    alpha=0.8
 )
 
 # Plot "Sell" with a contrasting color
@@ -212,9 +210,8 @@ sns.histplot(
     ax=ax,
     label='Sell',
     kde=False,
-    color='red',  # Explicit color
     linewidth=1,
-    alpha=0.5
+    alpha=0.8
 )
 
 # Add legend, labels, and formatting
@@ -242,7 +239,7 @@ buy_per_min = (buy
                .groupby(level='timestamp', as_index=False, group_keys=False)
                .apply(lambda x: x.nlargest(columns='price', n=depth))
                .reset_index())
-buy_per_min.timestamp = buy_per_min.timestamp.view('int64') // 1e9 + utc_offset.total_seconds()
+buy_per_min.timestamp = buy_per_min.timestamp.view('int64') // 1e9
 buy_per_min.timestamp = buy_per_min.timestamp.astype(int)
 buy_per_min.info()
 
@@ -258,7 +255,7 @@ sell_per_min = (sell
                 .apply(lambda x: x.nsmallest(columns='price', n=depth))
                 .reset_index())
 
-sell_per_min.timestamp = sell_per_min.timestamp.view('int64') // 1e9 + utc_offset.total_seconds()
+sell_per_min.timestamp = sell_per_min.timestamp.view('int64') // 1e9
 sell_per_min.timestamp = sell_per_min.timestamp.astype(int)
 sell_per_min.info()
 
@@ -270,7 +267,7 @@ trades = trades[trades.cross == 0].between_time(market_open, market_close)
 trades_per_min = (trades
                   .resample('Min')
                   .agg({'price': 'mean', 'shares': 'sum'}))
-trades_per_min.index = trades_per_min.index.view('int64') // 1e9 + utc_offset.total_seconds()
+trades_per_min.index = trades_per_min.index.view('int64') // 1e9
 trades_per_min.index = trades_per_min.index.astype(int)
 trades_per_min.info()
 
@@ -300,10 +297,13 @@ trades_per_min.price.plot(figsize=(14, 8),
                           lw=2, 
                           title=title)
 
-ax.xaxis.set_major_formatter(FuncFormatter(lambda ts, _: datetime.fromtimestamp(ts).strftime('%H:%M')))
+ax.xaxis.set_major_formatter(
+    FuncFormatter(lambda ts, _: datetime.fromtimestamp(ts, tz=timezone.utc).strftime('%H:%M'))
+)
 
 ax.set_xlabel('')
 ax.set_ylabel('Price', fontsize=12)
+print(buy['timestamp'].head())  # Confirm original timezone
 
 red_patch = mpatches.Patch(color='red', label='Sell')
 blue_patch = mpatches.Patch(color='royalblue', label='Buy')
