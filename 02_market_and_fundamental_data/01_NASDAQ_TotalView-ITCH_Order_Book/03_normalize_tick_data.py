@@ -19,7 +19,7 @@ mpl.rcParams['figure.dpi'] = 100
 
 # Set your date & stock symbol here
 date = '10302019'
-stock = 'GE'
+stock = 'AAPL'
 
 # Adjust the paths below as needed
 data_path = Path(r'C:\Users\pinha\OneDrive\Documents\Trading\data')
