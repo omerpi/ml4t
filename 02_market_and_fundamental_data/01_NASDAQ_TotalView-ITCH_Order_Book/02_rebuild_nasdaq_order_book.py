@@ -23,7 +23,7 @@ def format_time(t):
 
 # Set your date & stock symbol here
 date = '10302019'
-stock = 'GE'
+stock = 'AAPL'
 
 # Adjust the paths below as needed
 data_path = Path(r'C:\Users\pinha\OneDrive\Documents\Trading\data')
@@ -109,7 +109,6 @@ if not order_book_store.exists():
     with pd.HDFStore(order_book_store) as store:
         key = f'{stock}/messages'
         store.put(key, messages)
-        print(store.info())
 
     def get_trades(m):
         """
@@ -126,7 +125,6 @@ if not order_book_store.exists():
         return trades.set_index('timestamp').sort_index().astype(int)
 
     trades = get_trades(messages)
-    print(trades.info())
 
     with pd.HDFStore(order_book_store) as store:
         store.put(f'{stock}/trades', trades)
@@ -230,20 +228,12 @@ if not order_book_store.exists():
 
 # Now read from order_book_store (which should have /ICE/buy, /ICE/sell)
 with pd.HDFStore(order_book_store) as store:
-    print(store.info())
     buy = store[f'{stock}/buy'].reset_index().drop_duplicates()
     sell = store[f'{stock}/sell'].reset_index().drop_duplicates()
 
 # Convert price to float/dollar form
 buy.price = buy.price.mul(1e-4)
 sell.price = sell.price.mul(1e-4)
-
-percentiles = [0.01, 0.02, 0.1, 0.25, 0.75, 0.9, 0.98, 0.99]
-desc_df = pd.concat([
-    buy.price.describe(percentiles=percentiles).to_frame('buy'),
-    sell.price.describe(percentiles=percentiles).to_frame('sell')
-], axis=1)
-print(desc_df)
 
 # Filter extreme outliers
 buy = buy[buy.price > buy.price.quantile(0.01)]
@@ -287,9 +277,6 @@ fig.tight_layout()
 utc_offset = timedelta(hours=4)
 depth = 100
 
-print("BUY min timestamp:", buy['timestamp'].min())
-print("BUY max timestamp:", buy['timestamp'].max())
-
 buy_per_min = (
     buy
     .groupby([pd.Grouper(key='timestamp', freq='Min'), 'price'])['shares']
@@ -304,7 +291,6 @@ buy_per_min = (
 )
 buy_per_min.timestamp = buy_per_min.timestamp.view('int64') // int(1e9)
 buy_per_min.timestamp = buy_per_min.timestamp.astype(int)
-buy_per_min.info()
 
 sell_per_min = (
     sell
@@ -320,7 +306,6 @@ sell_per_min = (
 )
 sell_per_min.timestamp = sell_per_min.timestamp.view('int64') // int(1e9)
 sell_per_min.timestamp = sell_per_min.timestamp.astype(int)
-sell_per_min.info()
 
 with pd.HDFStore(order_book_store) as store:
     trades = store[f'{stock}/trades']
@@ -336,7 +321,6 @@ trades_per_min = (
 )
 trades_per_min.index = trades_per_min.index.view('int64') // int(1e9)
 trades_per_min.index = trades_per_min.index.astype(int)
-trades_per_min.info()
 
 # Final scatter plot of limit order levels + trade price line
 sns.set_style('white')
@@ -363,12 +347,10 @@ ax.xaxis.set_major_formatter(
 )
 
 filtered_buy = buy.set_index('timestamp').between_time(market_open, market_close)
-print("Filtered BUY range:", filtered_buy.index.min(), filtered_buy.index.max())
-print(filtered_buy.head(), filtered_buy.tail())
+
 
 ax.set_xlabel('')
 ax.set_ylabel('Price', fontsize=12)
-print("Sample of buy timestamps (raw):\n", buy['timestamp'].head())
 
 red_patch = mpatches.Patch(color='red', label='Sell')
 blue_patch = mpatches.Patch(color='royalblue', label='Buy')
