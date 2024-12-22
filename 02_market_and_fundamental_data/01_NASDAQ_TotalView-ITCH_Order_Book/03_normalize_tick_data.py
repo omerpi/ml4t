@@ -131,7 +131,6 @@ with pd.HDFStore(order_book_store) as store:
     trades = store[f'{stock}/trades']
 trades.price = trades.price.mul(1e-4)
 trades = trades[trades.cross == 0].between_time(market_open, market_close).drop('cross', axis=1)
-print(trades.info())
 trades_per_min = trades.shares.sum() / (60*7.5)  # min per trading day
 trades['cumul_vol'] = trades.shares.cumsum()
 
@@ -149,7 +148,6 @@ with pd.HDFStore(order_book_store) as store:
     trades = store[f'{stock}/trades']
 trades.price = trades.price.mul(1e-4)
 trades = trades[trades.cross == 0].between_time(market_open, market_close).drop('cross', axis=1)
-print(trades.info())
 value_per_min = trades.shares.mul(trades.price).sum() / (60*7.5)
 trades['cumul_val'] = trades.shares.mul(trades.price).cumsum()
 

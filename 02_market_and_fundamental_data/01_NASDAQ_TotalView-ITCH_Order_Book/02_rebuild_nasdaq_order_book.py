@@ -274,13 +274,10 @@ ax.set_ylabel("Shares ('000)")
 sns.despine()
 fig.tight_layout()
 
-utc_offset = timedelta(hours=4)
 depth = 100
 
 buy_per_min = (
-    buy
-    .groupby([pd.Grouper(key='timestamp', freq='Min'), 'price'])['shares']
-    .sum()
+    buy.groupby([pd.Grouper(key='timestamp', freq='Min'), 'price'])['shares'].sum()
     .apply(np.log)  # log of the sum of shares
     .to_frame('shares')
     .reset_index('price')
