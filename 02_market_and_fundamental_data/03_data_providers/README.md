@@ -24,5 +24,5 @@ The notebook [03_quandl_demo](03_quandl_demo.ipynb) shows how Quandl uses a very
 
 ## zipline & Qantopian
 
-The notebook [contains the notebook [zipline_data](05_zipline_data.ipynb) briefly introduces the backtesting library `zipline` that we will use throughout this book and show how to access stock price data while running a backtest. For installation please refer to the instructions [here](../../installation).
+The notebook [contains the notebook [zipline_data](05_zipline_data_demo.ipynb) briefly introduces the backtesting library `zipline` that we will use throughout this book and show how to access stock price data while running a backtest. For installation please refer to the instructions [here](../../installation).
 

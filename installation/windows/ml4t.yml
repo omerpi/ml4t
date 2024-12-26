@@ -517,4 +517,4 @@ dependencies:
     - pyportfolioopt==1.5.2
     - qdldl==0.1.5.post2
     - scs==3.2.0
-prefix: C:\Users\stefa\miniconda3\envs\ml4t
+prefix: C:\Users\pinha\miniconda3\envs\ml4t-omer
