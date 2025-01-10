@@ -1,3 +1,5 @@
+# Quandl had been replaced (acquired) by nasdaqdatalink
+
 import os
 import nasdaqdatalink
 import pandas as pd

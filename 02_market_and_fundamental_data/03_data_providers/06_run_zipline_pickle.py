@@ -3,25 +3,21 @@ import matplotlib.pyplot as plt
 
 # Load the performance DataFrame from the pickle file
 perf = pd.read_pickle('dma.pickle')
-
-# Display the first few rows of the DataFrame
 print(perf.head())
 
-# Plotting settings
+# Plotting
 plt.figure(figsize=(12, 12))
 
-# Plot Portfolio Value
+# Plot portfolio value
 ax1 = plt.subplot(211)
-perf['portfolio_value'].plot(ax=ax1)
+perf['portfolio_value'].plot(ax=ax1, title='Portfolio Value Over Time')
 ax1.set_ylabel('Portfolio Value')
-ax1.set_title('Portfolio Value Over Time')
 
-# Plot AAPL Stock Price
+# Plot AAPL stock price
 ax2 = plt.subplot(212, sharex=ax1)
-perf['AAPL'].plot(ax=ax2)
+perf['AAPL'].plot(ax=ax2, title='AAPL Stock Price Over Time')
 ax2.set_ylabel('AAPL Stock Price')
-ax2.set_title('AAPL Stock Price Over Time')
 
-# Show the plots
+# Display the plots
 plt.tight_layout()
 plt.show()
